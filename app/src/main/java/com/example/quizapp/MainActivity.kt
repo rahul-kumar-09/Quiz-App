@@ -24,11 +24,12 @@ class MainActivity : AppCompatActivity() {
         val listQuestionModel = mutableListOf<QuestionModel>()
         listQuestionModel.add(QuestionModel("What is Android?", mutableListOf("Language", "OS", "Product", "None"), "OS"))
         listQuestionModel.add(QuestionModel("Who own Android?", mutableListOf("Samsung", "Google", "Apple", "Microsoft"), "Google"))
+        listQuestionModel.add(QuestionModel("Which assistant android uses?", mutableListOf("Siri", "Google assistant", "Cortana", "Alexa"), "Google assistant"))
 
-        quizModelList.add(QuizModel("1", "Programming", "All the basic programming", "10"))
-        quizModelList.add(QuizModel("2", "Computer", "All the basic Computer", "15"))
+        quizModelList.add(QuizModel("1", "Programming", "All the basic programming", "10", listQuestionModel))
+      /*  quizModelList.add(QuizModel("2", "Computer", "All the basic Computer", "15"))
         quizModelList.add(QuizModel("3", "Geography", "All the basic Geography", "20"))
-
+*/
         setUpRecyclerView()
     }
 

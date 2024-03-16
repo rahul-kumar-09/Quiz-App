@@ -129,7 +129,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="4dp"
-                tools:text="Next"
+                android:text="Next"
                 android:paddingVertical="8sp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="40dp"
