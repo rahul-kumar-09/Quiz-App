@@ -1,12 +1,15 @@
 package com.example.quizapp
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import androidx.appcompat.app.AlertDialog
 import com.example.quizapp.databinding.ActivityQuizBinding
+import com.example.quizapp.databinding.ScoreDialogBinding
 
 class QuizActivity : AppCompatActivity(), View.OnClickListener {
     companion object {
@@ -100,6 +103,29 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
     private fun finishQuiz(){
+        val totalQuestion = questionModelList.size
+        val percentage = ((score.toFloat() / totalQuestion.toFloat() ) * 100 ).toInt()
 
+        val dialogBinding = ScoreDialogBinding.inflate(layoutInflater)
+        dialogBinding.apply {
+            scoreProgressIndicator.progress = percentage
+            scoreProgressText.text = "$percentage %"
+            if (percentage > 60){
+                scoreTitle.text = "Congrats! You have passed"
+                scoreTitle.setTextColor(Color.BLUE)
+            }else {
+                scoreTitle.text = "Oops! You have failed"
+                scoreTitle.setTextColor(Color.RED)
+            }
+            scoreSubtitle.text = "$score out of $totalQuestion are correct"
+            finishBtn.setOnClickListener {
+                finish()
+            }
+
+        }
+        AlertDialog.Builder(this)
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .show()
     }
 }
