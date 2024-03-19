@@ -2,8 +2,10 @@ package com.example.quizapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.quizapp.databinding.ActivityMainBinding
+import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -21,19 +23,28 @@ class MainActivity : AppCompatActivity() {
 
     }
     private fun getDataFromFirebase(){
-        val listQuestionModel = mutableListOf<QuestionModel>()
-        listQuestionModel.add(QuestionModel("What is Android?", mutableListOf("Language", "OS", "Product", "None"), "OS"))
-        listQuestionModel.add(QuestionModel("Who own Android?", mutableListOf("Samsung", "Google", "Apple", "Microsoft"), "Google"))
-        listQuestionModel.add(QuestionModel("Which assistant android uses?", mutableListOf("Siri", "Google assistant", "Cortana", "Alexa"), "Google assistant"))
+        binding.progressBar.visibility = View.VISIBLE
 
-        quizModelList.add(QuizModel("1", "Programming", "All the basic programming", "10", listQuestionModel))
-      /*  quizModelList.add(QuizModel("2", "Computer", "All the basic Computer", "15"))
-        quizModelList.add(QuizModel("3", "Geography", "All the basic Geography", "20"))
-*/
-        setUpRecyclerView()
+        FirebaseDatabase.getInstance().reference
+            .get()
+            .addOnSuccessListener {dataSnapshort ->
+                if (dataSnapshort.exists()){
+                    for (snapshot in dataSnapshort.children){
+                        val quizModel = snapshot.getValue(QuizModel::class.java)
+                        if (quizModel != null) {
+                            quizModelList.add(quizModel)
+                        }
+                    }
+                }
+                setUpRecyclerView()
+
+            }
+
     }
 
     private fun setUpRecyclerView() {
+        binding.progressBar.visibility = View.GONE
+
         adapter = QuizListAdapter(quizModelList)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
